@@ -1,3 +1,13 @@
-.app-container {
-    display: flex;
+.app-layout {
+    display: grid;
+    grid-template-columns: 300px auto;
+    grid-template-areas: 'nav-bar main-ontent';
+}
+
+.nav-bar-area {
+    grid-area: nav-bar;
+}
+
+.main-content-area {
+    grid-area: main -content;
 }
