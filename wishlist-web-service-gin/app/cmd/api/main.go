@@ -20,3 +20,14 @@ func main() {
 func registerControllers(router *gin.Engine) {
     router.GET("/wishlist/:id", controllers.GetWishlistById)
 }
+
+// func connectDatabase() {
+//     //Create a new Postgresql database connection
+//     dsn := "host=localhost user=<your_user> password=<your_password> dbname=<your_dbname> port=<your_port>"
+
+//     // Open a connection to the database
+//     db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+//     if err != nil {
+//         panic("failed to connect to database: " + err.Error())
+//     }
+// }
