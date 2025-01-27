@@ -23,3 +23,20 @@ func GetWishlistById(c *gin.Context) {
 
 	c.IndentedJSON(http.StatusOK, wishlist)
 }
+
+/*
+* Description: Find a wishlist by id
+* Verb: GET
+ */
+ func GetWishlistItemsById(c *gin.Context) {
+	id := c.Param("wishlistId")
+
+	wishlistItems,err := wishlist_repository.GetWishlistItemsById(id)
+
+	if err != nil {
+		c.IndentedJSON(http.StatusNotFound, gin.H{"message": err.Error()})
+		return 
+	}
+
+	c.IndentedJSON(http.StatusOK, wishlistItems)
+}

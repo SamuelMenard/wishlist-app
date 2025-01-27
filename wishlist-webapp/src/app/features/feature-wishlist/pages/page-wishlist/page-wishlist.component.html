@@ -1,8 +1,13 @@
+@if(isModelLoading()) { Loading } @else if(model() !== null) {
+<!-- Model successfully loaded, display wishlist items -->
 <div class="page-layout">
     <section class="header-area">Header area</section>
     <section class="Main-area">
         <!-- Wishlist name -->
-        <div><h1>List name</h1></div>
+        <div>
+            <h1>{{ model()?.name }}</h1>
+            <h2>Owner: {{ model()?.ownerFullName }}</h2>
+        </div>
 
         <!-- Actions -->
         <div>
@@ -10,28 +15,14 @@
         </div>
 
         <!-- Wishlist items -->
-        <div class="list-group">
-            <button class="list-group-item list-group-item-action">
-                <div class="hstack gap-3">
-                    <div class="ms-2 me-auto">
-                        <div class="fw-bold">Something I really really want</div>
-                        Proposed by: John Doe
-                    </div>
-                    <div class="p-2 ms-auto"><span class="badge text-bg-danger">Taken</span></div>
-                    <div class="p-2">01/01/2025</div>
-                </div>
-            </button>
-
-            <button class="list-group-item list-group-item-action">
-                <div class="hstack gap-3">
-                    <div class="ms-2 me-auto">
-                        <div class="fw-bold">Something I really really want</div>
-                        Proposed by: John Doe
-                    </div>
-                    <div class="p-2 ms-auto"><span class="badge text-bg-warning">Looking for split</span></div>
-                    <div class="p-2">01/01/2025</div>
-                </div>
-            </button>
-        </div>
+        <app-wishlist-items
+            [loading]="areItemsLoading()"
+            [items]="items()"
+            [error]="wishlistItemsLoadingError()"
+        ></app-wishlist-items>
     </section>
 </div>
+} @else {
+<!-- Failed to load model, display an error message to user -->
+<div class="alert alert-danger" role="alert">Failed to load wishlist</div>
+}

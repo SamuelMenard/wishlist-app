@@ -9,16 +9,35 @@ import (
 )
 
 func main() {
-    router := gin.Default()
+	router := gin.Default()
 
-    // Register routes
-    registerControllers(router)
+	router.Use(corsMiddleware())
 
-    router.Run("localhost:8080")
+	// Register routes
+	registerControllers(router)
+
+	router.Run("localhost:8080")
 }
 
 func registerControllers(router *gin.Engine) {
-    router.GET("/wishlist/:id", controllers.GetWishlistById)
+	router.GET("/wishlist/:id", controllers.GetWishlistById)
+	router.GET("/wishlist/items/:wishlistId", controllers.GetWishlistItemsById)
+}
+
+func corsMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
+
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+
+		c.Next()
+	}
 }
 
 // func connectDatabase() {
