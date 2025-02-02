@@ -1,1 +1,5 @@
-<p>page-wishlist-item works!</p>
+@if(isLoading()) { loading } @else if(!error()) {
+<div>
+    <h1>{{ model()?.name }}</h1>
+</div>
+} @else { error }

@@ -18,4 +18,8 @@ export class WishlistClientService {
     public getWishlistItems(wishlistId: string): Observable<WishlistItem[]> {
         return this.http.get<WishlistItem[]>(`${this.apiUrl}/wishlist/items/${wishlistId}`);
     }
+
+    public getWishlistItemById(wishlistItemId: string): Observable<WishlistItem> {
+        return this.http.get<WishlistItem>(`${this.apiUrl}/wishlistItem/${wishlistItemId}`);
+    }
 }

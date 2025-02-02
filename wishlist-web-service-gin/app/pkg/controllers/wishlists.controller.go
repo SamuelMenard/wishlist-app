@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"net/http"
-	wishlist_repository "smenard/wishlist-web-service-gin/app/pkg/repositories"
+	"smenard/wishlist-web-service-gin/app/pkg/repositories"
 
 	"github.com/gin-gonic/gin"
 )
@@ -14,7 +14,7 @@ import (
 func GetWishlistById(c *gin.Context) {
 	id := c.Param("id")
 
-	wishlist,err := wishlist_repository.GetWishlistById(id)
+	wishlist,err := repositories.GetWishlistById(id)
 
 	if err != nil {
 		c.IndentedJSON(http.StatusNotFound, gin.H{"message": err.Error()})
@@ -31,7 +31,7 @@ func GetWishlistById(c *gin.Context) {
  func GetWishlistItemsById(c *gin.Context) {
 	id := c.Param("wishlistId")
 
-	wishlistItems,err := wishlist_repository.GetWishlistItemsById(id)
+	wishlistItems,err := repositories.GetWishlistItemsById(id)
 
 	if err != nil {
 		c.IndentedJSON(http.StatusNotFound, gin.H{"message": err.Error()})

@@ -1,7 +1,7 @@
 @if(loading()) { loading } @else if(!error()) {
 <div class="list-group">
     @for(item of items(); track item.id) {
-    <button class="list-group-item list-group-item-action">
+    <button class="list-group-item list-group-item-action" (click)="onItemClicked(item.id)">
         <div class="hstack gap-3">
             <div class="ms-2 me-auto">
                 <div class="fw-bold">{{ item.name }}</div>

@@ -22,6 +22,7 @@ func main() {
 func registerControllers(router *gin.Engine) {
 	router.GET("/wishlist/:id", controllers.GetWishlistById)
 	router.GET("/wishlist/items/:wishlistId", controllers.GetWishlistItemsById)
+	router.GET("/wishlistItem/:id", controllers.GetWishlistItemById)
 }
 
 func corsMiddleware() gin.HandlerFunc {
