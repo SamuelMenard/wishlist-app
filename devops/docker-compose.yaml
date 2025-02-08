@@ -7,10 +7,12 @@ services:
       - '5432:5432'
     extra_hosts:
       - 'host.docker.internal:host-gateway'
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: test_db
     volumes:
-      - db:/var/lib/postgresql/data
-    env_file:
-      - ./app.env
+      - db:/var/lib/test/postgresql/data
 
 volumes:
   db:

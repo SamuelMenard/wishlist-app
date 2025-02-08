@@ -34,3 +34,11 @@ func GetWishlistItemsById(wishlistId string) ([]models.WishlistItem, error) {
 
 	return wishlistItems, nil
 }
+
+/*
+* Description: Return user wishlists
+* Verb: GET
+ */
+ func GetWishlists() ([]models.Wishlist, error) {
+	return wishlists, nil
+}

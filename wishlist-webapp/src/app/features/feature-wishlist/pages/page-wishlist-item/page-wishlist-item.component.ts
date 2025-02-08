@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { WishlistItem } from '../../services/data/models/wishlist-item.model';
-import { WishlistClientService } from '../../services/data/wishlist-client.service';
 import { catchError, finalize, of, take } from 'rxjs';
+import { WishlistItemsClientService } from '../../services/data/clients/wishlist-items-client.service';
 
 @Component({
     selector: 'app-page-wishlist-item',
@@ -16,7 +16,7 @@ export class PageWishlistItemComponent implements OnInit {
     protected readonly isLoading = signal(true);
     protected readonly error = signal(false);
     private readonly route = inject(ActivatedRoute);
-    private readonly wishlistClientService = inject(WishlistClientService);
+    private readonly wishlistItemsClientService = inject(WishlistItemsClientService);
 
     ngOnInit(): void {
         // Load selected model
@@ -30,7 +30,7 @@ export class PageWishlistItemComponent implements OnInit {
             return;
         }
 
-        this.wishlistClientService
+        this.wishlistItemsClientService
             .getWishlistItemById(wishlistItemId)
             .pipe(
                 catchError((err) => {

@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Wishlist } from './models/wishlist.model';
-import { WishlistItem } from './models/wishlist-item.model';
+import { Wishlist } from '../models/wishlist.model';
+import { WishlistItem } from '../models/wishlist-item.model';
 
 @Injectable({
     providedIn: 'root',
@@ -19,7 +19,7 @@ export class WishlistClientService {
         return this.http.get<WishlistItem[]>(`${this.apiUrl}/wishlist/items/${wishlistId}`);
     }
 
-    public getWishlistItemById(wishlistItemId: string): Observable<WishlistItem> {
-        return this.http.get<WishlistItem>(`${this.apiUrl}/wishlistItem/${wishlistItemId}`);
+    public getWishlists(): Observable<Wishlist[]> {
+        return this.http.get<Wishlist[]>(`${this.apiUrl}/wishlists`);
     }
 }

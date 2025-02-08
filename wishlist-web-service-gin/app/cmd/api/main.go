@@ -3,10 +3,19 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/gin-gonic/gin"
 
 	"smenard/wishlist-web-service-gin/app/pkg/controllers"
+	"smenard/wishlist-web-service-gin/app/pkg/database"
+	enums "smenard/wishlist-web-service-gin/app/pkg/database/emums"
 )
+
+type User struct {
+	Id 		  uint8
+	Username string
+}
 
 func main() {
 	router := gin.Default()
@@ -16,13 +25,44 @@ func main() {
 	// Register routes
 	registerControllers(router)
 
+	// Connect to database
+	connectToDatabase()
+
 	router.Run("localhost:8080")
 }
 
 func registerControllers(router *gin.Engine) {
+	fmt.Println("registering controllers")
+
 	router.GET("/wishlist/:id", controllers.GetWishlistById)
 	router.GET("/wishlist/items/:wishlistId", controllers.GetWishlistItemsById)
 	router.GET("/wishlistItem/:id", controllers.GetWishlistItemById)
+	router.GET("/wishlists", controllers.GetWishlists)
+
+	fmt.Println("controllers have been registered")
+}
+
+func connectToDatabase() {
+	fmt.Println("connecting to database...")
+
+	config := database.DbConfig{
+		Host:     "localhost",
+		User:     "admin",
+		Password: "root",
+		DbName:   "wishlist_db",
+		Port:     "5432",
+		SslMode:  "disable",
+		TimeZone: "GMT",
+	}
+
+	db,err := database.ConnectToDb(enums.Postgre, config)
+
+	if (err != nil) {
+		fmt.Println("failed to connect to database")
+		panic("failed to connect to db")
+	} else {
+		fmt.Println("successfully connected to database")
+	}
 }
 
 func corsMiddleware() gin.HandlerFunc {
@@ -40,14 +80,3 @@ func corsMiddleware() gin.HandlerFunc {
 		c.Next()
 	}
 }
-
-// func connectDatabase() {
-//     //Create a new Postgresql database connection
-//     dsn := "host=localhost user=<your_user> password=<your_password> dbname=<your_dbname> port=<your_port>"
-
-//     // Open a connection to the database
-//     db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-//     if err != nil {
-//         panic("failed to connect to database: " + err.Error())
-//     }
-// }

@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { WishlistClientService } from '../../services/data/wishlist-client.service';
+import { WishlistClientService } from '../../services/data/clients/wishlist-client.service';
 import { ActivatedRoute } from '@angular/router';
 import { Wishlist } from '../../services/data/models/wishlist.model';
 import { catchError, finalize, of, take } from 'rxjs';

@@ -14,6 +14,20 @@ var wishlists = []models.Wishlist{
 		CreatedAt:     time.Now(),
 		UpdatedAt:     time.Now(),
 	},
+	{
+		ID:            "2",
+		Name:          "This is a new list",
+		OwnerFullName: "John Doe",
+		CreatedAt:     time.Now(),
+		UpdatedAt:     time.Now(),
+	},
+	{
+		ID:            "3",
+		Name:          "Very very very very looooong list name",
+		OwnerFullName: "John Doe",
+		CreatedAt:     time.Now(),
+		UpdatedAt:     time.Now(),
+	},
 }
 
 var wishlistItems = []models.WishlistItem{
