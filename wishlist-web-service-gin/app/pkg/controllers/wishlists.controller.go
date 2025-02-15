@@ -1,17 +1,28 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"smenard/wishlist-web-service-gin/app/pkg/repositories"
 
 	"github.com/gin-gonic/gin"
 )
 
+func InitWishlistsController(router *gin.Engine) {
+	fmt.Println("registering wishlists controller")
+
+	router.GET("/wishlist/:id", getWishlistById)
+	router.GET("/wishlist/items/:wishlistId", getWishlistItemsById)
+	router.GET("/wishlists", getWishlists)
+
+	fmt.Println("wishlists controller has been registered!")
+}
+
 /*
 * Description: Find a wishlist by id
 * Verb: GET
  */
-func GetWishlistById(c *gin.Context) {
+func getWishlistById(c *gin.Context) {
 	id := c.Param("id")
 
 	wishlist,err := repositories.GetWishlistById(id)
@@ -28,7 +39,7 @@ func GetWishlistById(c *gin.Context) {
 * Description: Find a wishlist by id
 * Verb: GET
  */
- func GetWishlistItemsById(c *gin.Context) {
+ func getWishlistItemsById(c *gin.Context) {
 	id := c.Param("wishlistId")
 
 	wishlistItems,err := repositories.GetWishlistItemsById(id)
@@ -45,7 +56,7 @@ func GetWishlistById(c *gin.Context) {
 * Description: Return user wishlists
 * Verb: GET
  */
- func GetWishlists(c *gin.Context) {
+ func getWishlists(c *gin.Context) {
 	wishlists,err := repositories.GetWishlists()
 
 	if err != nil {
