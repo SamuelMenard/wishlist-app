@@ -22,24 +22,13 @@ func main() {
 
 	router.Use(corsMiddleware())
 
-	// Register routes
-	registerControllers(router)
+	// Initialize controllers and register routes
+	controllers.InitControllers(router)
 
 	// Connect to database
 	connectToDatabase()
 
 	router.Run("localhost:8080")
-}
-
-func registerControllers(router *gin.Engine) {
-	fmt.Println("registering controllers")
-
-	router.GET("/wishlist/:id", controllers.GetWishlistById)
-	router.GET("/wishlist/items/:wishlistId", controllers.GetWishlistItemsById)
-	router.GET("/wishlistItem/:id", controllers.GetWishlistItemById)
-	router.GET("/wishlists", controllers.GetWishlists)
-
-	fmt.Println("controllers have been registered")
 }
 
 func connectToDatabase() {
@@ -58,10 +47,10 @@ func connectToDatabase() {
 	db,err := database.ConnectToDb(enums.Postgre, config)
 
 	if (err != nil) {
-		fmt.Println("failed to connect to database")
 		panic("failed to connect to db")
 	} else {
 		fmt.Println("successfully connected to database")
+		fmt.Println(db)
 	}
 }
 
