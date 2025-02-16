@@ -1,11 +1,10 @@
 package database
 
 import (
-	"errors"
 	"fmt"
-	enums "smenard/wishlist-web-service-gin/app/pkg/database/emums"
 
 	"gorm.io/driver/postgres"
+
 	"gorm.io/gorm"
 )
 
@@ -19,25 +18,37 @@ type DbConfig struct {
 	TimeZone string
 }
 
-func ConnectToDb(strategy enums.DbConnectionStrategy, config DbConfig) (*gorm.DB, error) {
-	var db *gorm.DB
-	var err error
-
-	switch strategy {
-	case enums.Postgre:
-		db, err = connectPostgreDb(config)
-	case enums.None:
-		db = nil
-		err = errors.New("unable to connect database, no strategy was provided")
-	}
-
-	return db, err
+type DatabaseConnection interface {
+	OpenConnection()
 }
 
-// Connect to a postgre database
-func connectPostgreDb(config DbConfig) (*gorm.DB, error) {
+type PostgresDatabaseConnection struct {
+	config *DbConfig
+}
+
+func (dbc *PostgresDatabaseConnection) OpenConnection() (*gorm.DB, error) {
+	// Build connection string
 	dsn := fmt.Sprintf(
-			"host=%[1]s user=%[2]s password=%[3]s dbname=%[4]s port=%[5]s sslmode=%[6]s TimeZone=%[7]s", 
-			config.Host, config.User, config.Password, config.DbName, config.Port, config.SslMode, config.TimeZone)
+		"host=%[1]s user=%[2]s password=%[3]s dbname=%[4]s port=%[5]s sslmode=%[6]s TimeZone=%[7]s", 
+		dbc.config.Host, dbc.config.User, dbc.config.Password, dbc.config.DbName, dbc.config.Port, dbc.config.SslMode, dbc.config.TimeZone)
+
+	// Open connection
 	return gorm.Open(postgres.Open(dsn), &gorm.Config{})
+}
+
+func NewPostgresDatabaseConnection() *PostgresDatabaseConnection {
+	// TODO: Load from .env file
+	config := DbConfig{
+		Host:     "localhost",
+		User:     "admin",
+		Password: "root",
+		DbName:   "wishlist_db",
+		Port:     "5432",
+		SslMode:  "disable",
+		TimeZone: "GMT",
+	}
+
+	return &PostgresDatabaseConnection{
+		config: &config,
+	}
 }

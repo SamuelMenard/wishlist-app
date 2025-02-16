@@ -7,7 +7,7 @@ DROP TYPE wishlist_role;
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 -- Create enums
-CREATE TYPE wishlist_role AS ENUM ('owner', 'collaborator');
+CREATE TYPE wishlist_role_type AS ENUM ('owner', 'contributor');
 
 -- Create tables
 CREATE TABLE users (
@@ -34,13 +34,7 @@ CREATE TABLE users_wishlists (
     CONSTRAINT pk_users_wishlists PRIMARY KEY (user_id, wishlist_id, id)
 );
 
--- Create triggers
-CREATE TRIGGER before_insert_users
-BEFORE INSERT ON users
-FOR EACH ROW
-EXECUTE FUNCTION set_created_at();
-
 -- Insert dummy data
 INSERT INTO users (username, password, email) VALUES ('admin', crypt('root', gen_salt('bf')), 'admin@test.com');
 INSERT INTO wishlists (name) VALUES ('My very first wishlist');
-INSERT INTO users_wishlists (user_id, wishlist_id, user_role) VALUES (1, 1, 'owner');
+INSERT INTO users_wishlists (user_id, wishlist_id, user_role) VALUES (1, 4, 'owner');

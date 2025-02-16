@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"errors"
+	"smenard/wishlist-web-service-gin/app/pkg/database"
 	"smenard/wishlist-web-service-gin/app/pkg/models"
 )
 
@@ -40,5 +41,10 @@ func GetWishlistItemsById(wishlistId string) ([]models.WishlistItem, error) {
 * Verb: GET
  */
  func GetWishlists() ([]models.Wishlist, error) {
+	db,err := database.NewPostgresDatabaseConnection().OpenConnection()
+
+	if err != nil {
+		return []models.WishlistItem{}, errors.New("invalid parameter id")
+	}
 	return wishlists, nil
 }
