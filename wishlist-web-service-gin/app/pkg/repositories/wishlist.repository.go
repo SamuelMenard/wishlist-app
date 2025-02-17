@@ -44,7 +44,7 @@ func GetWishlistItemsById(wishlistId string) ([]models.WishlistItem, error) {
 	db,err := database.NewPostgresDatabaseConnection().OpenConnection()
 
 	if err != nil {
-		return []models.WishlistItem{}, errors.New("invalid parameter id")
+		return []models.Wishlist{}, errors.New("invalid parameter id")
 	}
 	return wishlists, nil
 }
