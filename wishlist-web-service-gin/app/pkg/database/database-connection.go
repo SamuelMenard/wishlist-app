@@ -33,7 +33,28 @@ func (dbc *PostgresDatabaseConnection) OpenConnection() (*gorm.DB, error) {
 		dbc.config.Host, dbc.config.User, dbc.config.Password, dbc.config.DbName, dbc.config.Port, dbc.config.SslMode, dbc.config.TimeZone)
 
 	// Open connection
-	return gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db,err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+
+	// Report error
+	if err != nil {
+		return nil, err
+	}
+
+	// Get config object
+	sqlDB, err := db.DB()
+
+	// Report error
+	if err != nil {
+		return nil, err
+	}
+
+	// Configure connection pooling
+    sqlDB.SetMaxOpenConns(100) // Maximum number of open connections
+    sqlDB.SetMaxIdleConns(10)  // Maximum number of idle connections
+    sqlDB.SetConnMaxLifetime(0) // Maximum amount of time a connection can be reused (0 means no limit)
+
+	// Return db object
+	return db, nil
 }
 
 func NewPostgresDatabaseConnection() *PostgresDatabaseConnection {

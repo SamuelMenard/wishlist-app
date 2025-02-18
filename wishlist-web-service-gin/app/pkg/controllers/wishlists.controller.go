@@ -1,31 +1,24 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 	"smenard/wishlist-web-service-gin/app/pkg/repositories"
 
 	"github.com/gin-gonic/gin"
 )
 
-func InitWishlistsController(router *gin.Engine) {
-	fmt.Println("registering wishlists controller")
-
-	router.GET("/wishlist/:id", getWishlistById)
-	router.GET("/wishlist/items/:wishlistId", getWishlistItemsById)
-	router.GET("/wishlists", getWishlists)
-
-	fmt.Println("wishlists controller has been registered!")
+type WishlistsController struct {
+	repo *repositories.WishlistRepository
 }
 
 /*
 * Description: Find a wishlist by id
 * Verb: GET
- */
-func getWishlistById(c *gin.Context) {
+*/
+ func (ctrl *WishlistsController) getWishlistById(c *gin.Context) {
 	id := c.Param("id")
 
-	wishlist,err := repositories.GetWishlistById(id)
+	wishlist,err := ctrl.repo.GetWishlistById(id)
 
 	if err != nil {
 		c.IndentedJSON(http.StatusNotFound, gin.H{"message": err.Error()})
@@ -38,11 +31,11 @@ func getWishlistById(c *gin.Context) {
 /*
 * Description: Find a wishlist by id
 * Verb: GET
- */
- func getWishlistItemsById(c *gin.Context) {
+*/
+func (ctrl *WishlistsController) getWishlistItemsById(c *gin.Context) {
 	id := c.Param("wishlistId")
 
-	wishlistItems,err := repositories.GetWishlistItemsById(id)
+	wishlistItems,err := ctrl.repo.GetWishlistItemsById(id)
 
 	if err != nil {
 		c.IndentedJSON(http.StatusNotFound, gin.H{"message": err.Error()})
@@ -55,9 +48,9 @@ func getWishlistById(c *gin.Context) {
 /*
 * Description: Return user wishlists
 * Verb: GET
- */
- func getWishlists(c *gin.Context) {
-	wishlists,err := repositories.GetWishlists()
+*/
+func (ctrl *WishlistsController) getWishlists(c *gin.Context) {
+	wishlists,err := ctrl.repo.GetWishlists()
 
 	if err != nil {
 		c.IndentedJSON(http.StatusNotFound, gin.H{"message": err.Error()})

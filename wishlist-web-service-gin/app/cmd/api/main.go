@@ -19,11 +19,16 @@ func main() {
 
 	router.Use(corsMiddleware())
 
-	// Initialize controllers and register routes
-	controllers.InitControllers(router)
+	// Build database connection
+	db,err := database.NewPostgresDatabaseConnection().OpenConnection()
 
-	// Connect db
-	database.AutoMigrateDatabase()
+	// Unable to connect to the database, terminate the execution
+	if err != nil {
+		panic("failed to connect to database")
+	}
+
+	// Initialize controllers and register routes
+	controllers.InitControllers(router, db)
 
 	router.Run("localhost:8080")
 }

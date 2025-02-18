@@ -2,6 +2,8 @@
 
 package main
 
+import "smenard/wishlist-web-service-gin/app/pkg/database"
+
 func main() {
-    //TODO: Implement some sort of CLI to control the API through a terminal
+	database.AutoMigrateDatabase()
 }

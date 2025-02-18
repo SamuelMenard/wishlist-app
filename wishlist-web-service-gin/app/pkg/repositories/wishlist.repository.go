@@ -2,15 +2,27 @@ package repositories
 
 import (
 	"errors"
-	"smenard/wishlist-web-service-gin/app/pkg/database"
+	"fmt"
 	"smenard/wishlist-web-service-gin/app/pkg/models"
+
+	"gorm.io/gorm"
 )
+
+type WishlistRepository struct {
+	db *gorm.DB
+}
+
+func NewWishlistRepository(db *gorm.DB) *WishlistRepository {
+	return &WishlistRepository{
+		db: db,
+	}
+}
 
 /*
 * Description: Find a wishlist by id
 * Verb: GET
  */
-func GetWishlistById(id string) (models.Wishlist, error) {
+func (r *WishlistRepository) GetWishlistById(id string) (models.Wishlist, error) {
 	if id == "" {
 		return models.Wishlist{}, errors.New("invalid parameter id")
 	}
@@ -28,7 +40,7 @@ func GetWishlistById(id string) (models.Wishlist, error) {
 * Description: Find a wishlist items by id
 * Verb: GET
  */
-func GetWishlistItemsById(wishlistId string) ([]models.WishlistItem, error) {
+func (r *WishlistRepository) GetWishlistItemsById(wishlistId string) ([]models.WishlistItem, error) {
 	if wishlistId == "" {
 		return []models.WishlistItem{}, errors.New("invalid parameter id")
 	}
@@ -40,11 +52,7 @@ func GetWishlistItemsById(wishlistId string) ([]models.WishlistItem, error) {
 * Description: Return user wishlists
 * Verb: GET
  */
- func GetWishlists() ([]models.Wishlist, error) {
-	db,err := database.NewPostgresDatabaseConnection().OpenConnection()
-
-	if err != nil {
-		return []models.Wishlist{}, errors.New("invalid parameter id")
-	}
+ func (r *WishlistRepository) GetWishlists() ([]models.Wishlist, error) {
+	fmt.Println(r.db)
 	return wishlists, nil
 }

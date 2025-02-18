@@ -4,13 +4,25 @@ import (
 	"errors"
 	"slices"
 	"smenard/wishlist-web-service-gin/app/pkg/models"
+
+	"gorm.io/gorm"
 )
+
+type WishlistItemsRepository struct {
+	db *gorm.DB
+}
+
+func NewWishlistItemsRepository(db *gorm.DB) *WishlistItemsRepository {
+	return &WishlistItemsRepository {
+		db: db,
+	}
+}
 
 /*
 * Description: Find a wishlist item by id
 * Verb: GET
  */
-func GetWishlistItemById(wishlistItemId string) (models.WishlistItem, error) {
+func (repo *WishlistItemsRepository) GetWishlistItemById(wishlistItemId string) (models.WishlistItem, error) {
 	if wishlistItemId == "" {
 		return models.WishlistItem{}, errors.New("invalid parameter id")
 	}

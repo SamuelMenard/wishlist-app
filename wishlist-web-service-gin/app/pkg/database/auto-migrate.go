@@ -13,6 +13,16 @@ func AutoMigrateDatabase() {
 		fmt.Println("unable to connect to database")
 	}
 
+	// Get SQL object to close connection when script completes
+	dbSQL,err := db.DB()
+
+	if err != nil {
+		fmt.Println("unable to connect to database")
+	}
+
+	// Close connection when done
+	defer dbSQL.Close()
+
 	// Create types
 	db.Exec("CREATE TYPE wishlist_role_type AS ENUM ('owner', 'contributor');")
 
